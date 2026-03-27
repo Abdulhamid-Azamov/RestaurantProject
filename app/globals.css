@@ -1,0 +1,81 @@
+@import "tailwindcss";
+@import "react-datepicker/dist/react-datepicker.css";
+
+@font-face {
+    font-family: "Gilroy";
+    src: url("/fonts/Gilroy-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Gilroy";
+    src: url("/fonts/Gilroy-ExtraBold.otf") format("opentype");
+    font-weight: 800;
+    font-style: normal;
+}
+
+body {
+    background-image: url("/images/bgimg.png");
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+}
+
+.containers {
+    max-width: 1360px;
+    padding: 20px;
+    width: 100%;
+    margin: 40px auto;
+}
+
+.op-background {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%) !important;
+}
+
+.leaf-img {
+    width: auto;
+    height: auto;
+}
+
+footer {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%), url("/images/footerBackground.png");
+    height: 314px;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Scroll */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 8px 0;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #B45309, #92400E);
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #D97706, #B45309);
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #B45309 transparent;
+}
+
+.login-bg {
+    background-image: url("/images/log-reg-bg.png");
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+}
+
