@@ -59,7 +59,7 @@ const CartDrawer = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void 
                         <span className="text-[16px] text-black/60">Итого:</span>
                         <span className="text-[20px] font-black">${totalPrice.toFixed(2)}</span>
                     </div>
-                    <button onClick={() => { onClose(); router.push('/checkout') }} className="cursor-pointer w-full bg-black text-white py-4 rounded-2xl text-[16px] font-bold cursor-pointer hover:bg-gray-800 transition">
+                    <button onClick={() => { onClose(); router.push('/checkout') }} className="cursor-pointer w-full bg-black text-white py-4 rounded-2xl text-[16px] font-bold hover:bg-gray-800 transition">
                         Заказать
                     </button>
                 </div>

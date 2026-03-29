@@ -10,7 +10,7 @@ import { useEffect, useState } from "react"
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const [username, setUsername] = useState<string | null>(null)
+    const [user, setUser] = useState<{ username: string; role: string } | null>(null)
     const router = useRouter()
 
     const languages = [
@@ -20,7 +20,11 @@ const Header = () => {
     ]
 
     useEffect(() => {
-        getUserFromToken().then(setUsername)
+        getUserFromToken().then((userData) => {
+            if (userData) {
+                setUser(userData)
+            }
+        })
     }, [])
 
     useEffect(() => {
@@ -36,7 +40,7 @@ const Header = () => {
 
     const handleLogout = async () => {
         await logoutApi()
-        setUsername(null)
+        setUser(null)
         setIsOpen(false)
         router.push('/login')
     }
@@ -58,14 +62,20 @@ const Header = () => {
                     <div className="min-w-35">
                         <CustomSelect languages={languages} />
                     </div>
-                    {username ? (
+                    {user ? (
                         <div className="relative">
                             <div onClick={() => setIsOpen(!isOpen)} className="flex items-center justify-center gap-2 bg-black px-2 py-2 rounded-xl cursor-pointer">
                                 <Image src={User} alt="User Img" width={18} height={18} />
-                                <p className="text-white text-[12px] leading-[150%]">{username}</p>
+                                <p className="text-white text-[12px] leading-[150%]">{user.username}</p>
                             </div>
                             {isOpen && (
                                 <div className="absolute right-0 top-12 bg-white rounded-2xl shadow-lg p-2 w-44 z-50">
+                                    {user.role === 'admin' && (
+                                        <Link href={'/admin'} className="block w-full text-left px-4 py-2 text-[14px] text-black hover:bg-gray-100 rounded-xl cursor-pointer transition">
+                                            Open Admin Panel
+                                        </Link>
+                                    )}
+
                                     <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-[14px] text-red-500 hover:bg-red-50 rounded-xl cursor-pointer transition">
                                         Выйти из аккаунта
                                     </button>

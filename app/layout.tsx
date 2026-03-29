@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/modules/Header";
 import Footer from "@/modules/Footer";
 import { CartProvider } from "@/context/CartContext";
+import { LikeProvider } from "@/context/LikeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning >
         <CartProvider>
-          {children}
+          <LikeProvider>
+            {children}
+          </LikeProvider>
         </CartProvider>
       </body>
     </html>

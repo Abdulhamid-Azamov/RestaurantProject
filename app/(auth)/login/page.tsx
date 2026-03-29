@@ -17,14 +17,20 @@ const Login = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-
         if (!username) return
         if (!password) return
-
         try {
             const result = await loginApi({ username, password })
             if (result.token) {
-                router.push('/')
+                localStorage.setItem('token', result.token)
+                document.cookie = `token=${result.token}; path=/; max-age=${60 * 60 * 24 * 7}`
+
+                const payload = JSON.parse(atob(result.token.split('.')[1]))
+                if (payload.role === 'admin') {
+                    router.push('/admin')
+                } else {
+                    router.push('/')
+                }
             }
         } catch (error) {
             console.log(error)

@@ -1,15 +1,20 @@
 "use client"
-import { BasketBtn, LikeBtn, LogoIcon } from '@/public/icons'
+import { BasketBtn, LikeBtn } from '@/public/icons'
 import Link from 'next/link'
 import BadgeAction from './BadgeAction'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { useCart } from '@/context/CartContext'
-import CartDrawer from './CartDrawer'  // ← qo'shing
+import { useLike } from '@/context/LikeContext'
+import CartDrawer from './CartDrawer'
+import LikeModal from './LikeModal'
+import { LogoIcon } from '@/public/icons'
 
 const NavBar = () => {
     const [cartOpen, setCartOpen] = useState(false)
+    const [likeOpen, setLikeOpen] = useState(false)
     const { totalCount } = useCart()
+    const { totalCount: likeCount } = useLike()
     const pathname = usePathname()
 
     const navList = [
@@ -21,7 +26,7 @@ const NavBar = () => {
     ]
 
     return (
-        <>  
+        <>
             <div className='flex items-center justify-between op-background mt-11 px-17 py-13 rounded-tl-[50px] rounded-tr-[50px]'>
                 <Link href={"/"}>
                     <LogoIcon />
@@ -37,7 +42,11 @@ const NavBar = () => {
                     })}
                 </nav>
                 <div className='flex gap-6.5'>
-                    <BadgeAction icon={<LikeBtn />} />
+                    <BadgeAction
+                        icon={<LikeBtn />}
+                        count={likeCount}
+                        onClick={() => setLikeOpen(true)}  // ✅
+                    />
                     <BadgeAction
                         icon={<BasketBtn />}
                         count={totalCount}
@@ -45,6 +54,7 @@ const NavBar = () => {
                     />
                 </div>
             </div>
+            <LikeModal isOpen={likeOpen} onClose={() => setLikeOpen(false)} />  {/* ✅ */}
             <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
         </>
     )

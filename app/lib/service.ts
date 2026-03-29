@@ -28,21 +28,9 @@ export const loginApi = async (data: {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
     })
-    const result = await response.json()
-
-    if (result.token) {
-        const cookieStore = await cookies()
-        cookieStore.set('token', result.token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            maxAge: 60 * 60 * 24 * 7,
-            path: '/',
-        })
-    }
-
-    return result
+    return response.json()
 }
+
 
 export const logoutApi = async () => {
     const cookieStore = await cookies()
@@ -106,7 +94,10 @@ export const getUserFromToken = async () => {
     if (!token) return null
     try {
         const payload = JSON.parse(atob(token.split('.')[1]))
-        return payload.username as string
+        return {
+            username: payload.username as string,
+            role: payload.role as string
+        }
     } catch {
         return null
     }
@@ -129,4 +120,97 @@ export const createReservation = async (data: {
         throw new Error(result.message || "Ошибка при бронировании")
     }
     return result
+}
+
+
+export const createMenu = async (data: object) => {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')?.value
+    const response = await fetch(`${API_URL}/menu`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    })
+    return response.json()
+}
+
+export const updateMenu = async (id: string, data: object) => {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')?.value
+    const response = await fetch(`${API_URL}/menu/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    })
+    return response.json()
+}
+
+export const deleteMenu = async (id: string) => {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')?.value
+    await fetch(`${API_URL}/menu/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+    })
+}
+
+export const getUsers = async () => {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')?.value
+    const response = await fetch(`${API_URL}/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store'
+    })
+    const result = await response.json()
+    return result.data
+}
+
+export const makeAdmin = async (id: string) => {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')?.value
+    const response = await fetch(`${API_URL}/users/${id}/make-admin`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    return response.json()
+}
+
+export const deleteUser = async (id: string) => {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')?.value
+    await fetch(`${API_URL}/users/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+    })
+}
+
+export const getOrders = async () => {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')?.value
+    const response = await fetch(`${API_URL}/reservation`, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store'
+    })
+    const result = await response.json()
+    return result.data
+}
+
+export const updateOrderStatus = async (id: string, status: string) => {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')?.value
+    const response = await fetch(`${API_URL}/reservation/${id}/status`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ status })
+    })
+    return response.json()
 }

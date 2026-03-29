@@ -107,3 +107,28 @@ type HeroMenuProps = {
     categories: Category[]
 }
 
+type LikeItem = {
+    id: string
+    name: string
+    image: string
+    price: number
+}
+
+type LikeContextType = {
+    items: LikeItem[]
+    addItem: (item: LikeItem) => void
+    removeItem: (id: string) => void
+    isLiked: (id: string) => boolean
+    totalCount: number
+}
+
+
+type User = {
+    id: string
+    firstname: string
+    lastname: string
+    username: string
+    phone: string
+    role: string
+    createdAt: string
+}
